@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using BackEnd.CustomValidations;
 
 namespace BackEnd.Models
 {
@@ -7,7 +9,7 @@ namespace BackEnd.Models
         public Account() { }
 
         [Key]
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         [Required, MinLength(6), MaxLength(20)]
         [RegularExpression(
@@ -16,46 +18,33 @@ namespace BackEnd.Models
         )]
         public required string Username { get; set; }
 
-        [Required, MinLength(8)]
-        public required string Password { get; set; }
-
         [Required]
-        public required string Salt { get; set; }
-
-        [Required, MinLength(6), MaxLength(50)]
-        public required string Nickname { get; set; }
-
-        [MaxLength(255)]
-        public string? Avatar { get; set; }
-
-        [MaxLength(500)]
-        public string? Bio { get; set; }
-
-        [MaxLength(20)]
-        public string? Gender { get; set; }
-
-        public DateTime? Birthday { get; set; }
-
-        [MaxLength(255)]
-        public string? DetailAddress { get; set; }
-
-        [MaxLength(255)]
-        public string? HomeAddress { get; set; }
-
-        [Required, RegularExpression(@"^\d{10,11}$")]
-        public required string PhoneNumber { get; set; }
+        [MinLength(8)]
+        public string PasswordHash { get; set; } = string.Empty;
 
         [Required, EmailAddress]
-        public required string Email { get; set; }
+        public string Email { get; set; } = string.Empty;
 
-        public bool IsAdmin { get; set; } = false;
-        public bool IsBanned { get; set; } = false;
+        [MaxLength(255)]
+        public string? FullName { get; set; }
+
+        public DateTime? DateOfBirth { get; set; }
+
+        [Required]
+        public bool IsActive { get; set; } = true;
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime? DeletedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+        public DateTime? LastLoginAt { get; set; }
 
-        // Quan hệ
+        // Foreign Key
+        public int RoleId { get; set; }
+
+        // Navigation Properties
+        [ForeignKey("RoleId")]
+        public virtual Role? Role { get; set; }
+
+        // Relationships
         public virtual IDCard? IdCard { get; set; }
         public virtual ICollection<Role>? Roles { get; set; }
         public virtual ICollection<Permission>? Permissions { get; set; }

@@ -1,0 +1,8 @@
+/home/yumiko/Project/ASP.NET/GameWebsite/BackEnd/obj/Debug/net9.0/BackEnd.csproj.AssemblyReference.cache
+/home/yumiko/Project/ASP.NET/GameWebsite/BackEnd/obj/Debug/net9.0/BackEnd.GeneratedMSBuildEditorConfig.editorconfig
+/home/yumiko/Project/ASP.NET/GameWebsite/BackEnd/obj/Debug/net9.0/BackEnd.AssemblyInfoInputs.cache
+/home/yumiko/Project/ASP.NET/GameWebsite/BackEnd/obj/Debug/net9.0/BackEnd.AssemblyInfo.cs
+/home/yumiko/Project/ASP.NET/GameWebsite/BackEnd/obj/Debug/net9.0/BackEnd.csproj.CoreCompileInputs.cache
+/home/yumiko/Project/ASP.NET/GameWebsite/BackEnd/obj/Debug/net9.0/BackEnd.MvcApplicationPartsAssemblyInfo.cs
+/home/yumiko/Project/ASP.NET/GameWebsite/BackEnd/obj/Debug/net9.0/BackEnd.MvcApplicationPartsAssemblyInfo.cache
+/home/yumiko/Project/ASP.NET/GameWebsite/BackEnd/obj/Debug/net9.0/BackEnd.sourcelink.json

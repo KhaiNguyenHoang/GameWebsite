@@ -5,48 +5,64 @@ namespace BackEnd.Utils
 {
     public class DatabaseContext : DbContext
     {
-        public DbSet<Account>? Accounts { get; set; }
-        public DbSet<Role>? Roles { get; set; }
-        public DbSet<Permission>? Permissions { get; set; }
-        public DbSet<IDCard>? IDCards { get; set; }
-
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options) { }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder
-                    .UseLazyLoadingProxies() // bật lazy loading
-                    .UseSqlServer(
-                        "Server=localhost;Database=GameWebsite;User Id=sa;Password=Admin12345!;TrustServerCertificate=True;"
-                    );
-            }
-        }
+        public DbSet<Account> Accounts { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
+        public DbSet<IDCard> IdCards { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Account - IDCard (1-1)
+            // Account - Role relationship (one-to-many)
+            modelBuilder
+                .Entity<Account>()
+                .HasOne(a => a.Role)
+                .WithMany(r => r.Accounts)
+                .HasForeignKey(a => a.RoleId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Account - IDCard relationship (one-to-one)
             modelBuilder
                 .Entity<Account>()
                 .HasOne(a => a.IdCard)
                 .WithOne(i => i.Account)
-                .HasForeignKey<IDCard>(i => i.AccountId);
+                .HasForeignKey<IDCard>("AccountId")
+                .OnDelete(DeleteBehavior.Cascade);
 
-            // Account - Role (many-to-many)
+            // Role - Permission relationship (many-to-many)
             modelBuilder
-                .Entity<Account>()
-                .HasMany(a => a.Roles)
-                .WithMany(r => r.Accounts)
-                .UsingEntity(j => j.ToTable("AccountRoles"));
+                .Entity<Role>()
+                .HasMany(r => r.Permissions)
+                .WithMany(p => p.Roles)
+                .UsingEntity(j => j.ToTable("RolePermissions"));
 
-            // Account - Permission (many-to-many)
+            // Seed data for Roles
             modelBuilder
-                .Entity<Account>()
-                .HasMany(a => a.Permissions)
-                .WithMany(p => p.Accounts)
-                .UsingEntity(j => j.ToTable("AccountPermissions"));
+                .Entity<Role>()
+                .HasData(
+                    new Role
+                    {
+                        Id = 1,
+                        Name = "Admin",
+                        Description = "Administrator role with full permissions",
+                    },
+                    new Role
+                    {
+                        Id = 2,
+                        Name = "User",
+                        Description = "Regular user role",
+                    },
+                    new Role
+                    {
+                        Id = 3,
+                        Name = "Moderator",
+                        Description = "Moderator role with limited admin permissions",
+                    }
+                );
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

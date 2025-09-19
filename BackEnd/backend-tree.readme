@@ -1,0 +1,100 @@
+# Backend Directory Structure - Function Explanation
+
+## Overview
+The BackEnd directory contains all the source code for the backend of the GameWebsite project using ASP.NET Core. The structure is organized according to professional software development standards, clearly separating business logic, data, and service layers.
+
+## Main Directory Structure
+
+### 📁 BackEnd (Root Directory)
+- Contains all backend source code.
+- Main files: `Program.cs` (application entry point), `BackEnd.csproj` (project configuration).
+
+### 📁 Controllers
+- Contains API controllers that handle HTTP requests from the frontend.
+- Each controller manages a specific module (e.g., AuthController for authentication, GameController for game logic).
+- Function: Receive requests, call services, return JSON responses.
+
+### 📁 Services
+- Contains service classes that implement core business logic.
+- Separates business logic from controllers for easier testing and maintenance.
+- Examples: UserService (user management), GameService (game logic), NotificationService (notifications).
+
+### 📁 Repositories
+- Contains repository classes for data access (Data Access Layer).
+- Uses Entity Framework Core to interact with the database.
+- Examples: UserRepository (CRUD operations for users), GameRepository (game data storage).
+
+### 📁 Models
+- Contains entity classes representing database data.
+- Defines schema for tables (Account, Role, Permission, IDCard).
+- Uses Data Annotations for validation and EF Core mapping.
+
+### 📁 DTOs
+- Data Transfer Objects: Classes used to transfer data between layers.
+- Includes ApiResponseSuccess, ApiResponseFailed, ApiResponseCode for standardized API responses.
+- Helps separate internal models from public API.
+
+### 📁 Utils
+- Contains utility classes and helper functions.
+- DatabaseContext.cs: DbContext for Entity Framework.
+- Common support functions like validation, encryption, logging.
+
+### 📁 CustomValidations
+- Contains custom validation attributes for model validation.
+- Examples: IdentifyDateValidationAttribute (ID date validation), NumberIDCardValidate (ID number validation).
+- Integrates with ASP.NET Core validation pipeline.
+
+### 📁 Middleware
+- Contains custom middleware for request/response pipeline processing.
+- Examples: AuthenticationMiddleware, ErrorHandlingMiddleware, CORS middleware.
+- Runs before/after controllers to handle cross-cutting concerns.
+
+### 📁 Extensions
+- Contains extension methods for .NET classes.
+- Examples: StringExtensions (string extension methods), ServiceCollectionExtensions (DI registration).
+- Helps keep code clean and reusable.
+
+### 📁 Configurations
+- Contains configuration classes for the application.
+- Examples: AppSettings, DatabaseConfig, JWTConfig.
+- Reads from appsettings.json and provides to DI container.
+
+### 📁 Migrations
+- Contains Entity Framework Core migration files.
+- Automatically created when running `dotnet ef migrations add`.
+- Manages database schema changes.
+
+### 📁 wwwroot
+- Directory for static files (CSS, JS, images) served directly by the web server.
+- Used for API documentation (Swagger UI), favicon, or static assets.
+
+### 📁 Tests
+- Contains all test cases for the backend.
+
+  #### 📁 UnitTests
+  - Unit tests for individual methods/functions.
+  - Uses xUnit/NUnit, Moq for mocking.
+  - Tests business logic in services and utilities.
+
+  #### 📁 IntegrationTests
+  - Integration tests between components (API endpoints, database).
+  - Uses TestServer for ASP.NET Core, InMemoryDatabase.
+  - Ensures the entire flow works correctly.
+
+### 📁 Properties
+- Contains launchSettings.json (debug profile configuration).
+- Sets environment variables, ports for development.
+
+## Main Configuration Files
+- `appsettings.json`: General configuration (ConnectionString, Logging, JWT).
+- `appsettings.Development.json`: Configuration for development environment.
+- `BackEnd.http`: REST Client file for API testing in VS Code.
+
+## Usage Guide
+1. Run migrations: `dotnet ef database update`
+2. Start: `dotnet run`
+3. Test API: Use Swagger at `/swagger` or Postman.
+4. Run tests: `dotnet test`
+
+This structure supports scalable, maintainable development for a large-scale game website project, with clear separation of concerns.
+

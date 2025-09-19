@@ -1,0 +1,100 @@
+# Cấu Trúc Thư Mục BackEnd - Giải Thích Chức Năng
+
+## Tổng Quan
+Thư mục BackEnd chứa toàn bộ mã nguồn cho phần backend của dự án GameWebsite sử dụng ASP.NET Core. Cấu trúc được tổ chức theo các tiêu chuẩn phát triển phần mềm chuyên nghiệp, phân tách rõ ràng các lớp logic, dữ liệu và dịch vụ.
+
+## Cấu Trúc Thư Mục Chính
+
+### 📁 BackEnd (Thư mục gốc)
+- Chứa toàn bộ mã nguồn backend.
+- File chính: `Program.cs` (điểm khởi chạy ứng dụng), `BackEnd.csproj` (cấu hình dự án).
+
+### 📁 Controllers
+- Chứa các API controllers xử lý các yêu cầu HTTP từ frontend.
+- Mỗi controller quản lý một module cụ thể (ví dụ: AuthController cho xác thực, GameController cho logic game).
+- Chức năng: Nhận request, gọi services, trả về response JSON.
+
+### 📁 Services
+- Chứa các lớp service thực hiện business logic chính.
+- Tách biệt logic nghiệp vụ khỏi controllers để dễ test và maintain.
+- Ví dụ: UserService (quản lý người dùng), GameService (logic trò chơi), NotificationService (thông báo).
+
+### 📁 Repositories
+- Chứa các lớp repository xử lý truy cập dữ liệu (Data Access Layer).
+- Sử dụng Entity Framework Core để tương tác với database.
+- Ví dụ: UserRepository (CRUD operations cho users), GameRepository (lưu trữ dữ liệu game).
+
+### 📁 Models
+- Chứa các entity classes đại diện cho dữ liệu trong database.
+- Định nghĩa schema cho các bảng (Account, Role, Permission, IDCard).
+- Sử dụng Data Annotations cho validation và mapping EF Core.
+
+### 📁 DTOs
+- Data Transfer Objects: Các lớp dùng để truyền dữ liệu giữa các layer.
+- Bao gồm ApiResponseSuccess, ApiResponseFailed, ApiResponseCode cho chuẩn hóa response API.
+- Giúp tách biệt internal models khỏi public API.
+
+### 📁 Utils
+- Chứa các utility classes và helper functions.
+- DatabaseContext.cs: DbContext cho Entity Framework.
+- Các hàm hỗ trợ chung như validation, encryption, logging.
+
+### 📁 CustomValidations
+- Chứa các custom validation attributes cho model validation.
+- Ví dụ: IdentifyDateValidationAttribute (kiểm tra ngày tháng CMND), NumberIDCardValidate (kiểm tra số CMND).
+- Tích hợp với ASP.NET Core validation pipeline.
+
+### 📁 Middleware
+- Chứa các custom middleware xử lý request/response pipeline.
+- Ví dụ: AuthenticationMiddleware, ErrorHandlingMiddleware, CORS middleware.
+- Chạy trước/ sau controllers để xử lý cross-cutting concerns.
+
+### 📁 Extensions
+- Chứa các extension methods cho các .NET classes.
+- Ví dụ: StringExtensions (hàm mở rộng cho string), ServiceCollectionExtensions (đăng ký DI).
+- Giúp code sạch và tái sử dụng.
+
+### 📁 Configurations
+- Chứa các lớp configuration cho ứng dụng.
+- Ví dụ: AppSettings, DatabaseConfig, JWTConfig.
+- Đọc từ appsettings.json và cung cấp cho DI container.
+
+### 📁 Migrations
+- Chứa các migration files của Entity Framework Core.
+- Tự động tạo khi chạy `dotnet ef migrations add`.
+- Quản lý schema database changes.
+
+### 📁 wwwroot
+- Thư mục static files (CSS, JS, images) phục vụ trực tiếp qua web server.
+- Sử dụng cho API documentation (Swagger UI), favicon, hoặc static assets.
+
+### 📁 Tests
+- Chứa toàn bộ test cases cho backend.
+
+  #### 📁 UnitTests
+  - Test đơn vị cho từng method/function.
+  - Sử dụng xUnit/NUnit, Moq cho mocking.
+  - Test business logic trong services và utilities.
+
+  #### 📁 IntegrationTests
+  - Test tích hợp giữa các components (API endpoints, database).
+  - Sử dụng TestServer cho ASP.NET Core, InMemoryDatabase.
+  - Đảm bảo toàn bộ flow hoạt động đúng.
+
+### 📁 Properties
+- Chứa file launchSettings.json (cấu hình debug profiles).
+- Cài đặt environment variables, ports cho development.
+
+## Các File Cấu Hình Chính
+- `appsettings.json`: Cấu hình chung (ConnectionString, Logging, JWT).
+- `appsettings.Development.json`: Cấu hình cho môi trường development.
+- `BackEnd.http`: File REST Client cho testing API trong VS Code.
+
+## Hướng Dẫn Sử Dụng
+1. Chạy migrations: `dotnet ef database update`
+2. Khởi động: `dotnet run`
+3. Test API: Sử dụng Swagger tại `/swagger` hoặc Postman.
+4. Chạy tests: `dotnet test`
+
+Cấu trúc này hỗ trợ phát triển scalable, maintainable cho dự án game website lớn, với separation of concerns rõ ràng.
+
