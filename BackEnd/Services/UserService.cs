@@ -1,16 +1,10 @@
-using Microsoft.EntityFrameworkCore;
 using BackEnd.Models;
+using BackEnd.Repositories;
 using BackEnd.Utils;
+using Microsoft.EntityFrameworkCore;
 
 namespace BackEnd.Services
 {
-    public interface IUserService
-    {
-        Task<Account?> GetUserByUsernameAsync(string username);
-        Task<Account?> CreateUserAsync(Account user);
-        Task<Account?> GetUserByIdAsync(int id);
-    }
-
     public class UserService : IUserService
     {
         private readonly DatabaseContext _context;
@@ -22,8 +16,8 @@ namespace BackEnd.Services
 
         public async Task<Account?> GetUserByUsernameAsync(string username)
         {
-            return await _context.Accounts
-                .Include(a => a.Role)
+            return await _context
+                .Accounts.Include(a => a.Role)
                 .FirstOrDefaultAsync(a => a.Username == username);
         }
 
@@ -36,8 +30,10 @@ namespace BackEnd.Services
             }
 
             // Check if email already exists
-            if (!string.IsNullOrEmpty(user.Email) &&
-                await _context.Accounts.AnyAsync(a => a.Email == user.Email))
+            if (
+                !string.IsNullOrEmpty(user.Email)
+                && await _context.Accounts.AnyAsync(a => a.Email == user.Email)
+            )
             {
                 return null; // Email already exists
             }
@@ -49,10 +45,9 @@ namespace BackEnd.Services
 
         public async Task<Account?> GetUserByIdAsync(int id)
         {
-            return await _context.Accounts
-                .Include(a => a.Role)
+            return await _context
+                .Accounts.Include(a => a.Role)
                 .FirstOrDefaultAsync(a => a.Id == id);
         }
     }
 }
-
