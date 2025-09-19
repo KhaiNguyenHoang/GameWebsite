@@ -1,27 +1,28 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace BackEnd.Models;
-
-public class Permission
+namespace BackEnd.Models
 {
-    public Permission() { }
-
-    public Permission(
-        Guid id,
-        string name,
-        string? description,
-        DateTime createdAt,
-        DateTime updatedAt,
-        DateTime? deletedAt
-    )
+    public class Permission
     {
-        Id = id;
-        Name = name;
+        public Permission() { }
+
+        [Key]
+        public Guid Id { get; set; }
+
+        [Required, MaxLength(50)]
+        [RegularExpression(
+            @"^[a-zA-Z0-9_]+$",
+            ErrorMessage = "Only letters, numbers, and underscore allowed"
+        )]
+        public required string Name { get; set; }
+
+        [MaxLength(255)]
+        public string? Description { get; set; }
+
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime? DeletedAt { get; set; }
+
+        public virtual ICollection<Account>? Accounts { get; set; }
     }
-
-    public Guid Id { get; set; }
-
-    [Required(ErrorMessage = "Permission name is required")]
-    [RegularExpression(@"^[a-zA-Z0-9_]+$")]
-    public required string Name { get; set; }
 }

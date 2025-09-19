@@ -1,43 +1,43 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace BackEnd.Models
 {
     public class IDCard
     {
         public IDCard() { }
 
-        public IDCard(
-            Guid id,
-            string userId,
-            string expireDate,
-            string issueDate,
-            string name,
-            string sex,
-            string address,
-            string nationality,
-            string idNumber,
-            string birthday
-        )
-        {
-            Id = id;
-            UserId = userId;
-            ExpireDate = expireDate;
-            IssueDate = issueDate;
-            Name = name;
-            Sex = sex;
-            Address = address;
-            Nationality = nationality;
-            IdNumber = idNumber;
-            Birthday = birthday;
-        }
-
+        [Key]
         public Guid Id { get; set; }
-        public required string UserId { get; set; }
-        public required string ExpireDate { get; set; }
-        public required string IssueDate { get; set; }
+
+        [Required]
+        public Guid AccountId { get; set; }
+
+        [ForeignKey(nameof(AccountId))]
+        public virtual Account? Account { get; set; }
+
+        [Required]
+        public DateTime ExpireDate { get; set; }
+
+        [Required]
+        public DateTime IssueDate { get; set; }
+
+        [Required, MaxLength(100)]
         public required string Name { get; set; }
+
+        [Required, MaxLength(10)]
         public required string Sex { get; set; }
+
+        [Required, MaxLength(255)]
         public required string Address { get; set; }
+
+        [Required, MaxLength(50)]
         public required string Nationality { get; set; }
+
+        [Required, MaxLength(20)]
         public required string IdNumber { get; set; }
-        public required string Birthday { get; set; }
+
+        [Required]
+        public DateTime Birthday { get; set; }
     }
 }

@@ -1,17 +1,20 @@
-namespace BackEnd.Models;
+using System.ComponentModel.DataAnnotations;
 
-public class Role
+namespace BackEnd.Models
 {
-    public Role() { }
-
-    public Role(int id, string name, string? description)
+    public class Role
     {
-        Id = id;
-        Name = name;
-        Description = description;
-    }
+        public Role() { }
 
-    public required int Id { get; set; }
-    public required string Name { get; set; }
-    public required string? Description { get; set; }
+        [Key]
+        public Guid Id { get; set; }
+
+        [Required, MaxLength(50)]
+        public required string Name { get; set; }
+
+        [MaxLength(255)]
+        public string? Description { get; set; }
+
+        public virtual ICollection<Account>? Accounts { get; set; }
+    }
 }
