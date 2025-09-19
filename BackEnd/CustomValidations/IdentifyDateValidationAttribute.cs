@@ -28,6 +28,6 @@ public class IdentifyDateValidationAttribute : ValidationAttribute
             return new ValidationResult("Birthday is too young");
         }
 
-        return ValidationResult.Success;
+        return ValidationResult.Success!;
     }
 }

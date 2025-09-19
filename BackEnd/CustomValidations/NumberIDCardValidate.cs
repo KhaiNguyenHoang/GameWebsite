@@ -19,7 +19,7 @@ namespace BackEnd.CustomValidations
                 return new ValidationResult("Input must be 15 digits");
             }
 
-            return ValidationResult.Success;
+            return ValidationResult.Success!;
         }
     }
 }

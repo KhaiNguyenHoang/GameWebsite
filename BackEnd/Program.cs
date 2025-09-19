@@ -1,4 +1,5 @@
 using BackEnd.Utils;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace BackEnd;
 
@@ -10,7 +11,8 @@ internal class Program
 
         // Add services to the container.
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-        builder.Services.AddOpenApi();
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
         builder.Services.AddControllers();
         builder.Services.AddDbContext<DatabaseContext>();
         var app = builder.Build();
@@ -43,10 +45,10 @@ internal class Program
         {
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
+            app.UseSwaggerUI();
         }
 
         // các middleware khác
-        app.UseHttpsRedirection();
         app.UseAuthorization();
 
         app.MapControllers(); // map API endpoints
